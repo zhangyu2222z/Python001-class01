@@ -35,7 +35,7 @@ def parseHtml(content):
     
 # 写入csv文件
 def writeCsv(contentList):
-    pd.DataFrame(data = movieCsvContent).to_csv('./movieInfo.csv', encoding='utf8', index=False, header=False)
+    pd.DataFrame(data = movieCsvContent).to_csv('./Python001-class01/week01/homework1/movieInfo.csv', encoding='utf8', index=False, header=False)
 
 # 执行块
 cnt = getPageContent()
