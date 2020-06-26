@@ -65,12 +65,9 @@ text()	获取元素中文本内容
 1、scrapy框架结构：
 
 Scrapy主要包括了以下组件：
-
-![Image text](pic/1.png)
-
+包括引擎，爬虫，调度器，下载器，管道，和相关几个中间件。
 
 Scrapy运行流程大概如下：
-![Image text](pic/2.png)
 
 1)、引擎根据所需域名调用对应域名的爬虫；
 2)、爬虫向调度器发起请求，调度器对多个爬虫请求做去重处理，并返回给引擎；
@@ -187,9 +184,5 @@ mygenerator = (i for i in range(0, 11))
 print(mygenerator)
 print(list(mygenerator))
 
-3、html、http协议：
-
-http协议是浏览器客户端和服务端信息交互协议：
-![Image text](pic/4.png)
 
 
