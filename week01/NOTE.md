@@ -87,13 +87,29 @@ pip install -r requirements.txt
 scrapy startproject 项目名
 3）进入 spiders目录创建爬虫：
 scrapy genspider 爬虫名 域名
-创建的scrapy项目目录结构如下：
-![Image text](pic/3.png)
+
+
 3、scrapy项目中相关文件说明：
 scrapy.cfg：scrapy项目配置文件。其中内容包括爬虫配置文件地址
 settings.py：爬虫相关配置文件。主要对爬虫进行设置优化，包括user-agent，下载延迟，持久化管道等属性。
 items.py：定义抓取记录转化的数据结构
 pipelines.py：用于对item形式数据进行进一步处理，如db保存或者写入文件
+例：
+# 注册到settings.py文件的ITEM_PIPELINES中，激活组件
+class DoubanmoviePipeline:
+#    def process_item(self, item, spider):
+#        return item
+
+    # 每一个item管道组件都会调用该方法，并且必须返回一个item对象实例或raise DropItem异常
+    def process_item(self, item, spider):
+        title = item['title']
+        link = item['link']
+        content = item['content']
+        output = f'|{title}|\t|{link}|\t|{content}|\n\n'
+        with open('./doubanmovie.txt', 'a+', encoding='utf-8') as article:
+            article.write(output)
+        return item
+
 pachong.py：爬虫逻辑文件，在spiders目录下，改文件命名会根据爬虫名自动创建，其中包括		用来爬虫逻辑类；
 爬虫逻辑类说明：
 class DoubanSpider(scrapy.Spider):
@@ -139,7 +155,7 @@ def start_requests(self):
         url = f'https://movie.douban.com/top250?start={i*25}'
         # dont_filter设置是否用allowed_domains 属性设置抓取网页域名限制，true-不会限制，false-通过allowed_domains限制域名抓取
         yield scrapy.Request(url=url, callback=self.parse, dont_filter=False)
-# 解析函数
+    # 解析函数
     def parse(self, response):
         movies = Selector(response=response).xpath('//div[@class="hd"]')
         for movie in movies:

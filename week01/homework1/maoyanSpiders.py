@@ -22,7 +22,7 @@ def getPageContent():
 def parseHtml(content):
     tags = bs(content, 'html.parser')
     dlElems = tags.find_all('div', attrs={'class':'movie-hover-info'})
-    movieCsvContent = [];
+    movieCsvContent = []
     for i in range(0, 10):
         subElems = dlElems[i].find('span', attrs={'class':'hover-tag'})
         movieTitle = subElems.find_parent().get('title').replace("\n", "").replace(" ", "")
