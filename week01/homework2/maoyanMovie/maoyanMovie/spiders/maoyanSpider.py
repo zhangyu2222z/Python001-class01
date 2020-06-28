@@ -1,6 +1,7 @@
 import scrapy
 from scrapy.selector import Selector as sl
 from maoyanMovie.items import MaoyanmovieItem
+import re
 
 class MaoyanspiderSpider(scrapy.Spider):
     name = 'maoyanSpider'
@@ -15,12 +16,24 @@ class MaoyanspiderSpider(scrapy.Spider):
         dlElems = sl(response=response).xpath('//dl/dd')
         for i in range(1, 11):
             mainItem = {}
+            # 类型:
+            typeStr = str(dlElems.xpath('(//div[@class="movie-hover-title"][2]/span[@class="hover-tag"]/text())[1]')\
+                .extract()).strip('\\n\n[]\' ')
+            # 上映时间:
+            datetimeStr = str(dlElems.xpath('(//div[@class="movie-hover-title movie-hover-brief"]\
+                /span[@class="hover-tag"]/text())[1]').extract()).strip('\\n\n[]\' ')
+            # 电影名称
             movieTitle = dlElems.xpath('(//div[@class="channel-detail movie-item-title"]/@title)[%d]' %i)
+            # 电影类型
             movieType = dlElems.xpath('(//div[@class="movie-hover-title"][2]/text())[%d]' %(i*2))
+            # 上映时间
             movieDatetime = dlElems.xpath('(//div[@class="movie-hover-title movie-hover-brief"]/text())[%d]' %(i*2))
-            mainItem['movieTitle'] = str(movieTitle.extract()).replace('\\n', '').replace('\n', '').replace(' ', '').replace('[', '').replace(']', '').replace('\'', '')
-            mainItem['movieType'] = str(movieType.extract()).replace('\\n', '').replace('\n', '').replace(' ', '').replace('[', '').replace(']', '').replace('\'', '')
-            mainItem['movieDatetime'] = str(movieDatetime.extract()).replace('\\n', '').replace('\n', '').replace(' ', '').replace('[', '').replace(']', '').replace('\'', '')
+            # 整成item形式
+            mainItem['movieTitle'] = str(movieTitle.extract()).strip('\\n\n[]\' ')
+            # 类型:爱情／动画／奇幻
+            mainItem['movieType'] = typeStr + str(movieType.extract()).strip('\\n\n[]\' ')
+            # 上映时间:2019-11-01
+            mainItem['movieDatetime'] = datetimeStr + str(movieDatetime.extract()).strip('\\n\n[]\' ')
             yield mainItem
 
 
