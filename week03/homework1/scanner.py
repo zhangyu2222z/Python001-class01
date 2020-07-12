@@ -79,6 +79,7 @@ if __name__ == '__main__':
             if concurrentNum <= 0:
                 concurrentNum = 4
             if 'ping' == commandType:
+                # 线程池 最大并发为传入参数值
                 with ThreadPoolExecutor(max_workers=concurrentNum) as t:
                     for i in range(len(ipAddrList)):
                         t.submit(cmdPing, ipAddrList[i], filePath)
@@ -94,6 +95,7 @@ if __name__ == '__main__':
             if 'ping' == commandType:
                 if cpuCount < concurrentNum:
                     concurrentNum = cpuCount
+                # 进程池 最大并发为传入参数值
                 p = Pool(concurrentNum)
                 for i in range(len(ipAddrList)):
                     ipAddrStr = ipAddrList[i]
