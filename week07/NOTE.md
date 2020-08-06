@@ -868,6 +868,23 @@ for k,v in d.items():
 -   无法实例化基类。
 -   如果忘记在其中一个子类中实现接口方法，要尽早报错。
 
+```
+from abc import ABCMeta, abstractmethod
+class Base(metaclass=ABCMeta):
+    @abstractmethod
+    def foo(self):
+        pass
+    @abstractmethod
+    def bar(self):
+        pass
+
+class Concrete(Base):
+    def foo(self):
+        pass
+
+c = Concrete() # TypeError
+```
+
 minin模式：
 在程序运行过程中，重定义类的继承，即动态继承。好处：
 - 可以在不修改任何源代码的情况下，对已有类进行扩展
