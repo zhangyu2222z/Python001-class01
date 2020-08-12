@@ -1,8 +1,10 @@
 # 动物类
-class Animals(object):
+from abc import ABCMeta, abstractmethod, ABC
+class Animals(metaclass=ABCMeta):
     # @abstractmethod
-    def __new__(cls, *args, **kwargs):
-        raise Exception('未指定动物不可以实例化！')
+    # def __new__(cls, *args, **kwargs):
+    #     raise Exception('未指定动物不可以实例化！')
+    @abstractmethod
     def __init__(self):
         self.animalType = '食草' #类型
         self.nature = '还行' #性格
@@ -28,8 +30,8 @@ class Animals(object):
 # 猫科类
 class Cat(Animals):
     shouts = '瞄~' #叫声
-    def __new__(cls, *args, **kwargs):
-        return object.__new__(cls)
+    # def __new__(cls, *args, **kwargs):
+    #     return object.__new__(cls)
     def __init__(self, _name='', _animalType='', _shape='', _nature=''):
         super().__init__() #继承父属性
         self.name = '1' #名字
