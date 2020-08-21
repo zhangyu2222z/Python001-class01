@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+</head>
+<body>
+<form action="/enter" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Login">
+    {% if errorInfo %}
+        <span>{{ errorInfo }}</span>
+    {% endif %}
+</form>
+</body>
+</html>
